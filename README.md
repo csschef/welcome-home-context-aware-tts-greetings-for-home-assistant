@@ -141,3 +141,17 @@ triggers:
       - binary_sensor.YOUR_DOOR_SENSOR
     to: "on"
 ```
+
+Alternative Arrival Signals
+
+You may replace the door sensor with any reliable arrival signal, such as:
+
+A hallway motion sensor
+
+A smart lock state change
+
+Any binary sensor that reliably indicates entry
+
+>⚠️ Important
+>This trigger is mandatory.
+>Without it, the welcome automation will never execute, even if all timers are running correctly.
