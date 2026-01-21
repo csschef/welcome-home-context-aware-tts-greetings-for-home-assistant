@@ -37,6 +37,7 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
 
 2. **Welcome Home Automation** - [`automation-welcome-home-tts.yaml`](automation-welcome-home-tts.yaml)
    - Triggered by a door sensor (or similar arrival signal)
+   - Checks if silent_mode is on. (optional) 
    - Evaluates active timers to determine:
      - Who arrived
      - Whether children are likely with them
