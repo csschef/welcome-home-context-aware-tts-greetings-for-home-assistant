@@ -1,0 +1,59 @@
+alias: Notification - Welcome Home
+description: Centralized and deterministic welcome logic
+
+# Use door sensor as trigger or sensor of your choice to determine arrival
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.YOUR_DOOR_SENSOR
+    to:
+      - "on"
+
+# Optional but recommended if someone is asleep
+conditions:
+  - condition: state
+    entity_id: input_boolean.silent_mode 
+    state: "off"
+
+# Optional delay to allow person entry before sending notification
+actions:
+  - delay: "00:00:02"
+
+# Evaluate all relevant states and store in variables for clarity and maintainability
+# This automation is based on multiple timers and states to determine who is arriving home
+# Starting timers should be handled in separate automations when people leave home/school/work see automation.timers.yaml
+  - variables:
+      person_a_homecoming: "{{ is_state('timer.arrival_timer_person_a', 'active') }}"
+      person_b_homecoming: "{{ is_state('timer.arrival_timer_person_b', 'active') }}"
+
+      person_a_with_child_a: "{{ is_state('timer.person_a_leaves_school', 'active') }}"
+      person_b_with_child_a: "{{ is_state('timer.person_b_leaves_school', 'active') }}"
+
+      person_a_with_child_b: "{{ is_state('timer.person_a_leaves_preschool', 'active') }}"
+      person_b_with_child_b: "{{ is_state('timer.person_b_leaves_preschool', 'active') }}"
+# Guest mode and day of the week checks for logic variations
+      guest_mode: "{{ is_state('input_boolean.guest_mode', 'on') }}"
+      friday: "{{ now().weekday() == 4 }}"
+# Call script to select and send appropriate welcome message based on evaluated states
+  - action: script.select_welcome_message
+    data:
+      person_a_homecoming: "{{ person_a_homecoming }}"
+      person_b_homecoming: "{{ person_b_homecoming }}"
+      person_a_with_child_a: "{{ person_a_with_child_a }}"
+      person_b_with_child_a: "{{ person_b_with_child_a }}"
+      person_a_with_child_b: "{{ person_a_with_child_b }}"
+      person_b_with_child_b: "{{ person_b_with_child_b }}"
+      guest_mode: "{{ guest_mode }}"
+      friday: "{{ friday }}"
+# Finish all relevant timers to reset state for future arrivals
+  - action: timer.finish
+    target:
+      entity_id:
+        - timer.arrival_timer_person_a
+        - timer.arrival_timer_person_b
+        - timer.person_a_leaves_school
+        - timer.person_b_leaves_school
+        - timer.person_a_leaves_preschool
+        - timer.person_b_leaves_preschool
+
+mode: single

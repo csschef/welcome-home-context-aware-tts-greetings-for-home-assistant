@@ -1,0 +1,129 @@
+alias: Timers - Welcome Home
+description: >
+  Starts and manages timers used to determine arrival context.
+  Timers are started when a person is detected at school or preschool
+  to infer that they are on their way home.
+
+# Triggers based on person location changes and home arrival
+triggers:
+  # Person A is detected at preschool (used to infer departure)
+  - trigger: state
+    entity_id:
+      - person.person_a
+    to: preschool
+    for: "00:01:00" # 1 minute delay to avoid false positives - adjust as needed
+    id: person_a_at_preschool
+
+  # Person A is detected at school (used to infer departure)
+  - trigger: state
+    entity_id:
+      - person.person_a
+    to: school
+    for: "00:01:00" # 1 minute delay to avoid false positives - adjust as needed
+    id: person_a_at_school
+
+  # Person A enters home zone
+  - trigger: zone
+    entity_id: person.person_a
+    zone: zone.home
+    event: enter
+    id: person_a_arrives_home
+
+  # Person B is detected at preschool (used to infer departure)
+  - trigger: state
+    entity_id:
+      - person.person_b
+    to: preschool
+    for: "00:01:00" # 1 minute delay to avoid false positives - adjust as needed
+    id: person_b_at_preschool
+
+  # Person B is detected at school (used to infer departure)
+  - trigger: state
+    entity_id:
+      - person.person_b
+    to: school
+    for: "00:01:00" # 1 minute delay to avoid false positives - adjust as needed
+    id: person_b_at_school
+
+  # Person B enters home zone
+  - trigger: zone
+    entity_id: person.person_b
+    zone: zone.home
+    event: enter
+    id: person_b_arrives_home
+
+conditions: []
+
+actions:
+  - choose:
+      # Person B leaves preschool
+      - conditions:
+          - condition: trigger
+            id: person_b_at_preschool
+          - condition: time
+            after: "08:00:00" # Time window to avoid false positives
+            before: "17:00:00" # Time window to avoid false positives
+            weekday: [mon, tue, wed, thu, fri] # Only on weekdays
+        sequence:
+          - action: timer.start
+            target:
+              entity_id: timer.person_b_leaves_preschool
+
+      # Person B leaves school
+      - conditions:
+          - condition: trigger
+            id: person_b_at_school
+          - condition: time
+            after: "08:00:00" # Time window to avoid false positives
+            before: "17:00:00" # Time window to avoid false positives
+            weekday: [mon, tue, wed, thu, fri] # Only on weekdays
+        sequence:
+          - action: timer.start
+            target:
+              entity_id: timer.person_b_leaves_school
+
+      # Person B arrives home
+      - conditions:
+          - condition: trigger
+            id: person_b_arrives_home
+        sequence:
+          - action: timer.start
+            target:
+              entity_id: timer.arrival_timer_person_b
+
+      # Person A leaves preschool
+      - conditions:
+          - condition: trigger
+            id: person_a_at_preschool
+          - condition: time
+            after: "08:00:00" # Time window to avoid false positives
+            before: "17:00:00" # Time window to avoid false positives
+            weekday: [mon, tue, wed, thu, fri] # Only on weekdays
+        sequence:
+          - action: timer.start
+            target:
+              entity_id: timer.person_a_leaves_preschool
+
+      # Person A leaves school
+      - conditions:
+          - condition: trigger
+            id: person_a_at_school
+          - condition: time
+            after: "08:00:00" # Time window to avoid false positives
+            before: "17:00:00" # Time window to avoid false positives
+            weekday: [mon, tue, wed, thu, fri] # Only on weekdays
+        sequence:
+          - action: timer.start
+            target:
+              entity_id: timer.person_a_leaves_school
+
+      # Person A arrives home
+      - conditions:
+          - condition: trigger
+            id: person_a_arrives_home
+        sequence:
+          - action: timer.start
+            target:
+              entity_id: timer.arrival_timer_person_a
+
+mode: single
