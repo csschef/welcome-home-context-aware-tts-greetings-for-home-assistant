@@ -1,4 +1,4 @@
-# Welcome Home - Context-Aware TTS Greetings (Home Assistant)
+# Welcome Home - Context-Aware TTS Greetings For Home Assistant
 
 This repository contains a **context-aware “Welcome Home” automation setup for Home Assistant**, designed to play spoken greetings when people arrive home.
 
