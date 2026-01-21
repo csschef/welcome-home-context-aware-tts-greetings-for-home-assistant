@@ -142,7 +142,7 @@ triggers:
     to: "on"
 ```
 
-Alternative Arrival Signals
+#### Alternative Arrival Signals
 
 You may replace the door sensor with any reliable arrival signal, such as:
 
