@@ -1,0 +1,556 @@
+alias: Välj Välkomstmeddelande
+mode: single
+fields:
+  person_a_homecoming: {}
+  person_b_homecoming: {}
+  person_a_with_child_a: {}
+  person_b_with_child_a: {}
+  person_a_with_child_b: {}
+  person_b_with_child_b: {}
+  guest_mode: {}
+sequence:
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.YOUR_MEDIA_PLAYER
+    data:
+      volume_level: 0.6 # Adjust volume as needed
+  - variables:
+      adults: >-
+        {% set a = [] %}
+        {% if person_a_homecoming %}{% set a = a + ['adult_a'] %}{% endif %}
+        {% if person_b_homecoming %}{% set a = a + ['adult_b'] %}{% endif %}
+        {{ a }}
+
+      children: >-
+        {% set c = [] %}
+        {% if person_a_with_child_a or person_b_with_child_a %}
+          {% set c = c + ['child_a'] %}
+        {% endif %}
+        {% if person_a_with_child_b or person_b_with_child_b %}
+          {% set c = c + ['child_b'] %}
+        {% endif %}
+        {{ c }}
+
+      has_both_adults: "{{ adults | length == 2 }}"
+      has_one_adult: "{{ adults | length == 1 }}"
+      has_child_a: "{{ 'child_a' in children }}"
+      has_child_b: "{{ 'child_b' in children }}"
+      spoken_group: "{{ adults + ( [] if guest_mode else children ) }}"
+  - choose:
+      - conditions: # Assumes children are with adults when guest mode is off
+          - condition: template
+            value_template: |-
+              {{
+                (
+                  has_both_adults and has_child_a and has_child_b
+                )
+                or
+                (
+                  has_both_adults and not has_child_a and not has_child_b and not guest_mode
+                )
+              }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Welcome home. Friday evening starts now.",
+                    "Person A, Person B, Child A and Child B are home. The weekend begins."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Welcome home. Monday is done.",
+                    "Person A, Person B, Child A and Child B are home after Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Welcome home. Tuesday completed.",
+                    "Person A, Person B, Child A and Child B are home. Tuesday is done."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Welcome home. Midweek achieved.",
+                    "Everyone is home. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home. Thursday evening begins.",
+                    "Person A, Person B, Child A and Child B are home. The weekend is close."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home. Saturday with the family.",
+                    "Person A, Person B, Child A and Child B are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home. Sunday reset time.",
+                    "Person A, Person B, Child A and Child B are home. Time to recharge."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: "{{ has_both_adults and guest_mode }}"
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person A and Person B are home. Friday has arrived.",
+                    "Welcome home Person A and Person B. The weekend begins."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday is done. Person A and Person B are home.",
+                    "Welcome home Person A and Person B. Monday completed."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday complete. Welcome home Person A and Person B.",
+                    "Person A and Person B are home. Tuesday is finished."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Welcome home Person A and Person B.",
+                    "Person A and Person B are home. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person A and Person B. Thursday evening begins.",
+                    "Person A and Person B are home. The weekend is close."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person A and Person B. Happy Saturday.",
+                    "Person A and Person B are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person A and Person B. Sunday reset time.",
+                    "Person A and Person B are home. Time to recharge."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_b' and has_child_a and not has_child_b }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person B and Child A are home. Friday has arrived.",
+                    "Welcome home Person B and Child A. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Person B and Child A are home.",
+                    "Welcome home Person B and Child A after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday finished. Person B and Child A are home.",
+                    "Welcome home Person B and Child A. Tuesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Person B and Child A are home.",
+                    "Welcome home Person B and Child A. Wednesday done."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person B and Child A. Thursday evening begins.",
+                    "Person B and Child A are home. The weekend is close."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person B and Child A. Happy Saturday.",
+                    "Person B and Child A are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person B and Child A. Time to slow down.",
+                    "Person B and Child A are home. Sunday reset."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_b' and has_child_b and not has_child_a }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person B and Child B are home. Friday has arrived.",
+                    "Welcome home Person B and Child B. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Person B and Child B are home.",
+                    "Welcome home Person B and Child B after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday finished. Person B and Child B are home.",
+                    "Welcome home Person B and Child B. Tuesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Person B and Child B are home.",
+                    "Welcome home Person B and Child B. Wednesday done."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person B and Child B. Thursday evening begins.",
+                    "Person B and Child B are home. The weekend is close."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person B and Child B. Happy Saturday.",
+                    "Person B and Child B are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person B and Child B. Time to slow down.",
+                    "Person B and Child B are home. Sunday reset."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_b' and has_child_a and has_child_b }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person B, Child A and Child B are home. Friday has arrived.",
+                    "Welcome home Person B and the kids. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Person B, Child A and Child B are home.",
+                    "Welcome home Person B and the kids after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday finished. Person B and the kids are home.",
+                    "Welcome home Person B, Child A and Child B. Tuesday done."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Person B, Child A and Child B are home.",
+                    "Welcome home Person B and the kids. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person B, Child A and Child B. Thursday evening begins.",
+                    "Person B and the kids are home. The weekend is getting closer."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person B and the kids. Happy Saturday.",
+                    "Person B, Child A and Child B are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person B and the kids. Time to slow down.",
+                    "Person B, Child A and Child B are home. Sunday reset."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_a' and has_child_a and not has_child_b }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person A and Child A are home. Friday has officially started.",
+                    "Welcome home Person A and Child A. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday complete. Person A and Child A are home.",
+                    "Welcome home Person A and Child A after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday finished. Person A and Child A are home.",
+                    "Welcome home Person A and Child A. Tuesday done."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Person A and Child A are home.",
+                    "Welcome home Person A and Child A. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person A and Child A. Thursday evening begins.",
+                    "Person A and Child A are home. The weekend is getting closer."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person A and Child A. Happy Saturday.",
+                    "Person A and Child A are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person A and Child A. Time to slow down.",
+                    "Person A and Child A are home. Sunday reset."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_a' and has_child_b and not has_child_a }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person A and Child B are home. Friday has officially begun.",
+                    "Welcome home Person A and Child B. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Person A and Child B are home.",
+                    "Welcome home Person A and Child B after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday done. Person A and Child B are home.",
+                    "Welcome home Person A and Child B. Tuesday checked off."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Person A and Child B are home.",
+                    "Welcome home Person A and Child B. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person A and Child B. Thursday evening starts now.",
+                    "Person A and Child B are home. The weekend is getting closer."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person A and Child B. Happy Saturday.",
+                    "Person A and Child B are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person A and Child B. Time to slow things down.",
+                    "Person A and Child B are home. Sunday reset mode."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_a' and has_child_a and has_child_b }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person A, Child A, and Child B are home. Friday has arrived.",
+                    "Welcome home Person A and kids. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Person A, Child A, and Child B are home.",
+                    "Welcome home Person A and kids after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday finished. Person A and the kids are home.",
+                    "Welcome home Person A, Child A, and Child B. Tuesday checked off."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Person A and the kids are home.",
+                    "Welcome home Person A, Child A, and Child B. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person A and kids. Thursday evening begins.",
+                    "Person A, Child A, and Child B are home. The weekend is near."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person A, Child A, and Child B. Happy Saturday.",
+                    "Person A and the kids are home. Saturday mode enabled."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person A and kids. Time to slow things down.",
+                    "Person A, Child A, and Child B are home. Sunday reset mode."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_b' and not has_child_a and not has_child_b }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person B is home. Friday has officially begun.",
+                    "Welcome home Person B. Weekend mode activated."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Welcome home Person B.",
+                    "Welcome home Person B after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday done. Welcome home Person B.",
+                    "Person B is home. Tuesday checked off."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Welcome home Person B.",
+                    "Person B is home. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person B. Thursday evening begins.",
+                    "Person B is home. The weekend is getting close."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person B. Happy Saturday.",
+                    "Person B is home. Enjoy the weekend."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person B. Time to unwind.",
+                    "Person B is home. Sunday reset mode."
+                  ] | random }}
+                {% endif %}
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ has_one_adult and adults[0] == 'adult_a' and not has_child_a and not has_child_b }}
+        sequence:
+          - action: tts.cloud_say
+            entity_id: media_player.YOUR_MEDIA_PLAYER
+            data:
+              message: |
+                {% if now().weekday() == 4 %}
+                  {{ [
+                    "Person A is home. Friday has arrived.",
+                    "Welcome home Person A. The weekend begins now."
+                  ] | random }}
+
+                {% elif now().weekday() == 0 %}
+                  {{ [
+                    "Monday completed. Welcome home Person A.",
+                    "Welcome home Person A after a long Monday."
+                  ] | random }}
+
+                {% elif now().weekday() == 1 %}
+                  {{ [
+                    "Tuesday conquered. Welcome home Person A.",
+                    "Person A is home. Tuesday checked off."
+                  ] | random }}
+
+                {% elif now().weekday() == 2 %}
+                  {{ [
+                    "Midweek arrival. Welcome home Person A.",
+                    "Person A is home. Wednesday complete."
+                  ] | random }}
+
+                {% elif now().weekday() == 3 %}
+                  {{ [
+                    "Welcome home Person A. Thursday evening begins.",
+                    "Person A is home. The weekend is getting close."
+                  ] | random }}
+
+                {% elif now().weekday() == 5 %}
+                  {{ [
+                    "Welcome home Person A. Happy Saturday.",
+                    "Person A is home. Enjoy the day."
+                  ] | random }}
+
+                {% else %}
+                  {{ [
+                    "Welcome home Person A. Time to slow down.",
+                    "Person A is home. Sunday reset mode."
+                  ] | random }}
+                {% endif %}
