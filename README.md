@@ -44,7 +44,7 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
    - Calls the greeting script with calculated context
 
 3. **Greeting Script** - [`script-welcome-home-messages.yaml`](script-welcome-home-messages.yaml)
-   - Selects a spoken message based on:
+   - Randomly selects a predefined spoken message based on:
      - Adults present
      - Children present
      - Weekday
