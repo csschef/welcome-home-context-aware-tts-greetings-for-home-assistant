@@ -30,7 +30,8 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
 
 ## 🧠 How It Works (High-Level)
 
-1. **Timers Automation**
+1. **Timers Automation** – [`automation-welcome-home-timers.yaml`](automation-welcome-home-timers.yaml)
+
    - Starts timers when adults are detected at school or preschool
    - Starts arrival timers when adults enter the home zone
 
