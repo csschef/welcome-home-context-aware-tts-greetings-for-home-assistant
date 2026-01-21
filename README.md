@@ -12,7 +12,7 @@ The greetings adapt dynamically based on:
 
 ## ⚠️ Important Context & Design Assumptions
 
-This template is **intentionally opinionated** and based on the following real-world scenario:
+This is **intentionally opinionated** and based on the following real-world scenario:
 
 - **2 adults**
 - **2 children**
