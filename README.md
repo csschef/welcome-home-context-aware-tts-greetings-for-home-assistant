@@ -116,3 +116,28 @@ Referenced in the automations as:
 
 ```yaml
 media_player.YOUR_MEDIA_PLAYER
+```
+
+--- 
+
+### 5️⃣ Physical Arrival Trigger (Required)
+
+The welcome message automation is intentionally **not triggered by person or zone changes**.
+
+Instead, it relies on a **physical confirmation** that someone has actually entered the home — most commonly a **door sensor**.
+
+This design choice:
+
+- Prevents duplicate announcements  
+- Avoids GPS drift false positives  
+- Ensures the message plays **only when someone truly arrives**
+
+#### Example: Door Sensor Trigger
+
+```yaml
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.YOUR_DOOR_SENSOR
+    to: "on"
+```
