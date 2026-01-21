@@ -1,4 +1,4 @@
-# Welcome Home – Context-Aware TTS Greetings (Home Assistant)
+# Welcome Home - Context-Aware TTS Greetings (Home Assistant)
 
 This repository contains a **context-aware “Welcome Home” automation setup for Home Assistant**, designed to play spoken greetings when people arrive home.
 
@@ -99,7 +99,7 @@ Used to infer whether children are with an adult:
 - `timer.person_a_leaves_preschool`
 - `timer.person_b_leaves_preschool`
 
-> ⏱️ Timer duration is flexible, but **30–90 minutes** is usually a good starting point.
+> ⏱️ Timer duration is flexible, but **30-90 minutes** is usually a good starting point.
 
 ---
 
@@ -110,7 +110,7 @@ A media player capable of TTS, for example:
 - Google Cast
 - Sonos
 - Alexa Media Player
-- Any Cloud TTS–compatible device
+- Any Cloud TTS-compatible device
 
 Referenced in the automations as:
 
