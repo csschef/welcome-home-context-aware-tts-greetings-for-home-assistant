@@ -156,3 +156,74 @@ Any binary sensor that reliably indicates entry
 >⚠️ Important
 >This trigger is mandatory.
 >Without it, the welcome automation will never execute, even if all timers are running correctly.
+>
+>---
+
+## 🛠️ Make It Your Own
+
+This setup is meant to be a **starting point**, not a locked-down solution.
+
+You are strongly encouraged to adapt it to your own household, devices, and preferences.
+
+### What You Can Customize
+
+You can freely adjust **all parts** of this solution, including but not limited to:
+
+- **People**
+  - Change the number of adults and children
+  - Rename `person_a`, `person_b`, `child_a`, `child_b` to match your setup
+  - Expand the logic to handle more people if needed
+
+- **Zones**
+  - Replace `school` and `preschool` with your own zone names
+  - Add additional zones (work, gym, grandparents, etc.)
+  - Adjust zone logic if children have their own device trackers
+
+- **Device Trackers**
+  - Use phones, smartwatches, cars, or custom trackers
+  - Combine multiple trackers per person if desired
+  - Replace zone-based detection with other presence logic
+
+- **Arrival Triggers**
+  - Swap the door sensor for:
+    - Motion sensors
+    - Smart locks
+    - NFC tags
+    - Any reliable binary sensor
+  - Add additional safeguards or confirmation steps
+
+- **Timers**
+  - Adjust timer durations to better fit your daily routines
+  - Remove timers you don’t need
+  - Add new timers for other activities or locations
+
+- **Messages**
+  - Rewrite all welcome messages
+  - Change language, tone, humor, or formality
+  - Add more variations per weekday
+  - Replace TTS with notifications, media playback, or scripts
+
+- **Media Output**
+  - Change which media player is used
+  - Add room-specific announcements
+  - Play sounds, music, or other audio instead of speech
+
+### Philosophy
+
+This solution favors:
+
+- **Deterministic behavior**
+- **Low false positives**
+- **Real-world confirmation of arrival**
+
+It is intentionally modular so you can:
+
+- Simplify it if your setup is smaller
+- Expand it if your home is more complex
+
+If something doesn’t match your household — **change it**.  
+Nothing here is sacred 😉
+
+---
+
+Feel free to fork, modify, break apart, or rebuild this automation until it fits *your* home perfectly.
