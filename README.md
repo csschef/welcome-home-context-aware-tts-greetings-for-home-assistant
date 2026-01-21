@@ -65,7 +65,7 @@ You **must** have the following zones configured in Home Assistant:
 
 These zones are used to infer context and must match the zone names referenced in the automations.
 
-> ⚠️ The *school* and *preschool* zones do **not** represent the children directly — they are used to infer that an adult is likely picking up a child.
+> ⚠️ The *school* and *preschool* zones do **not** represent the children directly - they are used to infer that an adult is likely picking up a child.
 
 ---
 
