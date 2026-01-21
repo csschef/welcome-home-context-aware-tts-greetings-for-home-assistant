@@ -222,7 +222,7 @@ It is intentionally modular so you can:
 - Simplify it if your setup is smaller
 - Expand it if your home is more complex
 
-If something doesn’t match your household — **change it**.  
+If something doesn’t match your household - **change it**.  
 Nothing here is sacred 😉
 
 ---
