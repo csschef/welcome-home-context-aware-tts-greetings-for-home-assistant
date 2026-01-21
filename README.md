@@ -32,7 +32,7 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
 
 1. **Timers Automation** - [`automation-welcome-home-timers.yaml`](automation-welcome-home-timers.yaml)
 
-   - Starts timers when adults are detected at school or preschool
+   - Starts timers when adults are detected at school or preschool for longer than a set time and on certain dates and within certain hours
    - Starts arrival timers when adults enter the home zone
 
 2. **Welcome Home Automation** - [`automation-welcome-home-tts.yaml`](automation-welcome-home-tts.yaml)
