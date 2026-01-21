@@ -1,4 +1,7 @@
-alias: Välj Välkomstmeddelande
+alias: Choose Welcome Message
+description: >
+  Selects and plays an appropriate welcome home message based on who is arriving
+  home and the context of their arrival.
 mode: single
 fields:
   person_a_homecoming: {}
