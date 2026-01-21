@@ -157,7 +157,8 @@ Any binary sensor that reliably indicates entry
 >This trigger is mandatory.
 >Without it, the welcome automation will never execute, even if all timers are running correctly.
 >
->---
+
+---
 
 ## 🛠️ Make It Your Own
 
@@ -198,7 +199,7 @@ You can freely adjust **all parts** of this solution, including but not limited 
   - Add new timers for other activities or locations
 
 - **Messages**
-  - Rewrite all welcome messages
+  - Rewrite all welcome messages,
   - Change language, tone, humor, or formality
   - Add more variations per weekday
   - Replace TTS with notifications, media playback, or scripts
