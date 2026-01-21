@@ -30,19 +30,19 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
 
 ## 🧠 How It Works (High-Level)
 
-1. **Timers Automation** – [`automation-welcome-home-timers.yaml`](automation-welcome-home-timers.yaml)
+1. **Timers Automation** - [`automation-welcome-home-timers.yaml`](automation-welcome-home-timers.yaml)
 
    - Starts timers when adults are detected at school or preschool
    - Starts arrival timers when adults enter the home zone
 
-2. **Welcome Home Automation**
+2. **Welcome Home Automation** - [`automation-welcome-home-tts.yaml`](automation-welcome-home-tts.yaml)
    - Triggered by a door sensor (or similar arrival signal)
    - Evaluates active timers to determine:
      - Who arrived
      - Whether children are likely with them
    - Calls the greeting script with calculated context
 
-3. **Greeting Script**
+3. **Greeting Script** - [`script-welcome-home-messages.yaml`](script-welcome-home-messages.yaml)
    - Selects a spoken message based on:
      - Adults present
      - Children present
