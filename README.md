@@ -160,7 +160,7 @@ Any binary sensor that reliably indicates entry
 
 ---
 
-## 🛠️ Make It Your Own
+## Make It Your Own
 
 This setup is meant to be a **starting point**, not a locked-down solution.
 
