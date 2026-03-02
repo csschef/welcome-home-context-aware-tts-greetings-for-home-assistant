@@ -10,7 +10,7 @@ The greetings adapt dynamically based on:
 
 ---
 
-## ⚠️ Important Context & Design Assumptions
+## Important Context & Design Assumptions
 
 This is **intentionally opinionated** and based on the following real-world scenario:
 
@@ -28,7 +28,7 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 1. **Timers Automation** - [`automation-welcome-home-timers.yaml`](automation-welcome-home-timers.yaml)
 
@@ -53,7 +53,7 @@ This means the solution is **not 100% foolproof**, but in real use it works **~9
 
 ---
 
-## ✅ Prerequisites
+## Prerequisites
 
 ### 1️⃣ Zones (Required)
 
@@ -65,7 +65,7 @@ You **must** have the following zones configured in Home Assistant:
 
 These zones are used to infer context and must match the zone names referenced in the automations.
 
-> ⚠️ The *school* and *preschool* zones do **not** represent the children directly - they are used to infer that an adult is likely picking up a child.
+> The *school* and *preschool* zones do **not** represent the children directly - they are used to infer that an adult is likely picking up a child.
 
 ---
 
@@ -100,7 +100,7 @@ Used to infer whether children are with an adult:
 - `timer.person_a_leaves_preschool`
 - `timer.person_b_leaves_preschool`
 
-> ⏱️ Timer duration is flexible, but **30-90 minutes** is usually a good starting point.
+> Timer duration is flexible, but **30-90 minutes** is usually a good starting point.
 
 ---
 
@@ -153,7 +153,7 @@ A smart lock state change
 
 Any binary sensor that reliably indicates entry
 
->⚠️ Important
+>Important
 >This trigger is mandatory.
 >Without it, the welcome automation will never execute, even if all timers are running correctly.
 >
